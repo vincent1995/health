@@ -11,10 +11,11 @@ except ImportError:
 # 载入所有特征，每个特征是一个dict
 features_name = [\
                  'face_color_hist','face_color_rect','face_gray_texture','face_power','face_lbp',\
-                 'tongue_color_hist','tongue_color_rect','tongue_gray_texture','tongue_lbp','tongue_power',\
-                 'face_block_color_hist','face_block_color_rect','face_block_gray_texture','face_block_lbp','face_block_power']
+                 # 'tongue_color_hist','tongue_color_rect','tongue_gray_texture','tongue_lbp','tongue_power',\
+                 # 'face_block_color_hist','face_block_color_rect','face_block_gray_texture','face_block_lbp','face_block_power'
+                ]
 features_set = {}
-path = r'B:\DeskTop\SRP中医体质辨识\体质辨识数据备份\origin'
+path = r'B:\DeskTop\SRP中医体质辨识\体质辨识数据备份\4466'
 for feature_name in features_name:
     f = open(path+'\\'+feature_name,'rb')
     data = pickle.load(f)
@@ -64,10 +65,12 @@ measures = np.zeros(1)
 # for type in range(1, 10):
 #     cw[type] = max_labels_num / np.bincount(train_labels)[type]
 # grid_search
-turned_parameter = {'alpha': 10.0 ** -np.arange(1, 7),'solver': ['lbfgs', 'sgd', 'adam'],\
-                    'hidden_layer_sizes':[(100),(100,100),(100,100,100),(100,100,100,100)]}
-from sklearn.neural_network import MLPClassifier
-clf = GridSearchCV(MLPClassifier(),turned_parameter,cv=5)
+turned_parameter = {
+    "solver":['newton-cg', 'lbfgs', 'sag'],
+    "multi_class":['ovr','multinomial'],
+    }
+from sklearn.linear_model import LogisticRegression
+clf = GridSearchCV(LogisticRegression(random_state=42),turned_parameter,cv=5)
 clf.fit(train_features,train_labels)
 print(clf.best_params_,clf.best_score_)
 # svm验证

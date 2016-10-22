@@ -515,9 +515,74 @@ def get_face_feature(path):
     f = open(path+'\\' + part + '_lbp', 'wb')
     pickle.dump(lbp, f)
 
+def get_face_feature_no_landmark(path):
+    part = 'face'
+    try:
+        f = open(path+'\\' + part + '_color_hist', 'rb')
+        color_hist=pickle.load(f)
+    except Exception:
+        color_hist = {}
+    try:
+        f = open(path+'\\' + part + '_color_rect', 'rb')
+        color_rect=pickle.load(f)
+    except Exception:
+        color_rect={}
+    try:
+        f = open(path+'\\' + part + '_gray_texture', 'rb')
+        gray_texture=pickle.load(f)
+    except Exception:
+        gray_texture = {}
+    try:
+        f = open(path+'\\' + part + '_power', 'rb')
+        power=pickle.load(f)
+    except Exception:
+        power = {}
+    try:
+        f = open(path+'\\' + part + '_lbp', 'rb')
+        lbp=pickle.load(f)
+    except Exception:
+        lbp = {}
+    for q,f in enumerate(glob.glob(path+r"\face\*.jpg")):
+        # 获得患者ID
+        ID = os.path.split(f)[1].split('.')[0].split('_')[0]
+        print(q, ID)
+        if(ID in color_hist.keys()):
+            continue
+        # 获得特征
+        img = io.imread(f)
+        im_hsv = rgb2hsv(img_as_float(img))  # 将图像转到HSV色彩空间
+        L = rank_hsv(im_hsv)  # 量化HSV色彩空间
+        H = Hist_hsv(L)  # 求HSV全局直方图
+        Whole_Color = getColorRec(im_hsv)  # HSV通道H通道（色调）和S通道（饱和度）的颜色距
+        img_gray = color.rgb2gray(img)
+        f1 = np.fft.fft2(img_gray)  # 二维离散傅里叶变换
+        fshift = np.fft.fftshift(f1)
+        fh = get_power(fshift)  # 均匀的将图像功率谱分成M=20个等宽度的长方环，求出每一个长方环功率谱能量占总能量的百分比
+        T = Gray_Texture(img_gray, [1], 16)  # 灰度共生矩阵得到8维特征
+        one_lbp = LBP(img)
+        # 存储特征
+        color_hist[ID] = H.tolist()
+        color_rect[ID] = Whole_Color
+        gray_texture[ID] = T.tolist()
+        power[ID] = fh.tolist()
+        lbp[ID] = one_lbp.tolist()
+
+    # 保存特征
+    f = open(path+'\\' + part + '_color_hist', 'wb')
+    pickle.dump(color_hist, f)
+    f = open(path+'\\' + part + '_color_rect', 'wb')
+    pickle.dump(color_rect, f)
+    f = open(path+'\\' + part + '_gray_texture', 'wb')
+    pickle.dump(gray_texture, f)
+    f = open(path+'\\' + part + '_power', 'wb')
+    pickle.dump(power, f)
+    f = open(path+'\\' + part + '_lbp', 'wb')
+    pickle.dump(lbp, f)
+
 
 if __name__ == '__main__':
-    path = r"B:\DeskTop\SRP中医体质辨识\体质辨识数据备份\origin"
+    path = r"B:\DeskTop\SRP中医体质辨识\体质辨识数据备份\4466"
     # get_tongue_feature(path)
     # get_face_block_feature(path)
-    get_face_feature(path)
+    # get_face_feature(path)
+    get_face_feature_no_landmark(path)
