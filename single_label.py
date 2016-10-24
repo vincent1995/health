@@ -112,10 +112,14 @@ if __name__ == '__main__':
             # 统计在该测试集上的准确率
             acc = np.sum(test_labels == predict_label) / len(predict_label)
             measures += acc
+            # 混淆矩阵
+            from sklearn.metrics import confusion_matrix
+            cm = confusion_matrix(test_labels,predict_label)
+            print(cm)
             # 统计label分布
-            print("predicted",np.bincount(predict_label,minlength=10)[1:])
-            print("answer",np.bincount(test_labels, minlength=10)[1:])
-            print("correct",np.bincount((test_labels == predict_label)*1*test_labels, minlength=10)[1:])
+            # print("predicted",np.bincount(predict_label,minlength=10)[1:])
+            # print("answer",np.bincount(test_labels, minlength=10)[1:])
+            # print("correct",np.bincount((test_labels == predict_label)*1*test_labels, minlength=10)[1:])
             # print(predict_label)
             # print('总样本数：', len(labels))
             # labels_distribution = []
