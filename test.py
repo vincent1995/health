@@ -1,21 +1,21 @@
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
-f = open(r"B:\DeskTop\SRP中医体质辨识\体质辨识数据备份\origin\tongue_color_hist",'rb')
-tongue = pickle.load(f)
-f = open(r"B:\DeskTop\SRP中医体质辨识\体质辨识数据备份\origin\face_color_hist",'rb')
-face = pickle.load(f)
-f = open(r"B:\DeskTop\SRP中医体质辨识\体质辨识数据备份\origin\face_block_color_hist",'rb')
-block = pickle.load(f)
-
-c1,c2,c3 = 0,0
-for (k,v) in tongue.items():
-    if k in face.keys():
-        c1+=1
-        if k in block.keys():
-            c2+=1
-print(c1,c2)
+# try:
+#     import cPickle as pickle
+# except ImportError:
+#     import pickle
+# f = open(r"B:\DeskTop\SRP中医体质辨识\体质辨识数据备份\origin\tongue_color_hist",'rb')
+# tongue = pickle.load(f)
+# f = open(r"B:\DeskTop\SRP中医体质辨识\体质辨识数据备份\origin\face_color_hist",'rb')
+# face = pickle.load(f)
+# f = open(r"B:\DeskTop\SRP中医体质辨识\体质辨识数据备份\origin\face_block_color_hist",'rb')
+# block = pickle.load(f)
+#
+# c1,c2,c3 = 0,0
+# for (k,v) in tongue.items():
+#     if k in face.keys():
+#         c1+=1
+#         if k in block.keys():
+#             c2+=1
+# print(c1,c2)
 
 # import numpy as np
 # a = np.array((True,True,True,False))
@@ -50,3 +50,30 @@ print(c1,c2)
 #         num+=1
 # print(num)
 
+# from sklearn.preprocessing import scale
+# import numpy as np
+# a = np.array(((1,2),(4,5),(7,8)),dtype=np.float)
+# print(a)
+# print(a.shape)
+# b = np.sum(a,axis=1).reshape((a.shape[0],1))
+# print(b)
+# print(a/b)
+
+
+# import numpy as np
+# from skimage import io
+# from sklearn.model_selection import KFold
+#
+# a = [2,2,3,4,3,2,3,2,1,10]
+# kf = KFold(n_splits=10)
+# for train,test in kf.split(a):
+#     print(train,test)
+
+# import numpy as np
+# from sklearn.metrics import confusion_matrix
+# a = np.array([0,0])/0
+# print(a)
+# print(a[0])
+
+y = [[1,2,1,2]]*200
+print(y)

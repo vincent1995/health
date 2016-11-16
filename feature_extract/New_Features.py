@@ -1,3 +1,5 @@
+# 该文件实现了多种特征的提取
+# 特征的格式：每个特征是一个dict（词典），患者ID（字符串类型）为键，值是list结构保存的特征值。
 import numpy as np
 import glob
 from skimage import io, color, feature, img_as_float, img_as_ubyte, transform
