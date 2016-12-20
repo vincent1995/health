@@ -69,11 +69,7 @@
 # for train,test in kf.split(a):
 #     print(train,test)
 
-# import numpy as np
-# from sklearn.metrics import confusion_matrix
-# a = np.array([0,0])/0
-# print(a)
-# print(a[0])
-
-y = [[1,2,1,2]]*200
-print(y)
+import numpy as np
+a = np.random.random(4)*8
+print(a)
+print(a.astype(np.int8))

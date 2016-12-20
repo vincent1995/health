@@ -8,6 +8,7 @@ from sklearn.preprocessing import scale
 from sklearn.model_selection import KFold, GridSearchCV
 from sklearn.metrics import confusion_matrix, accuracy_score
 import matplotlib.pyplot as plt
+import itertools
 
 # 参数调整范围
 turned_parameter = [{'C': [1, 10, 100, 1000]}]
@@ -37,18 +38,30 @@ def run_SVM(X, y):
     return cm, acc
 
 # 标准绘制混淆矩阵函数
-# 输入：混淆矩阵，标签名list
-def plot_confusion_matrix(cm, label_names=None, title='Confusion matrix',cmap=plt.cm.gray):
+# 输入：混淆矩阵，类名list
+def plot_confusion_matrix(cm, classes=None,
+                          cmap=plt.cm.gray):
     plt.figure()
     plt.rcParams['font.sans-serif'] = ['SimHei']  # 指定默认字体
     plt.rcParams['axes.unicode_minus'] = False  # 解决保存图像是负号'-'显示为方块的问题
     plt.imshow(cm, interpolation='nearest', cmap=cmap)
-    plt.title(title)
     plt.colorbar()
-    if label_names != None:
-        tick_marks = np.arange(len(label_names))
-        plt.xticks(tick_marks, label_names, rotation=45)
-        plt.yticks(tick_marks, label_names)
+    if classes == None:
+        classes = range(1,cm.shape[0]+1)
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
+
+    cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+
+    print(cm)
+
+    thresh = cm.max() / 2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        plt.text(j, i, round(cm[i, j],2),
+                 horizontalalignment="center",
+                 color="white" if cm[i, j] < thresh else "black")
+
     plt.tight_layout()
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
@@ -56,7 +69,6 @@ def plot_confusion_matrix(cm, label_names=None, title='Confusion matrix',cmap=pl
 
 if __name__ == '__main__':
     from sklearn.datasets import make_classification
-    X,y =make_classification(400,20,n_classes=8,n_informative=6)
-    cm,acc = run_SVM(X,y)
-    plot_confusion_matrix(cm)
+    X,y =make_classification(4000,20,n_classes=8,n_informative=6)
+    SVC().fit(X,y)
 

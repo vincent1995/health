@@ -10,9 +10,11 @@ import standard_SVM
 if __name__ == '__main__':
     # 载入特征，每个特征是一个dict
     features_name = [
-        'face_block_avg_color'
+        # 'face_block_avg_color'
+        # 'face_fcm_color'
+        # 'quanti_color_hist'
         # "face_main_color",\
-        # 'face_color_hist','face_color_rect','face_gray_texture','face_power','face_lbp',\
+        'face_color_hist','face_color_rect','face_gray_texture','face_power','face_lbp',\
         # 'tongue_color_hist','tongue_color_rect','tongue_gray_texture','tongue_lbp','tongue_power', \
         #  'small_tongue_color_hist', 'small_tongue_color_rect', 'small_tongue_gray_texture', 'small_tongue_lbp', 'small_tongue_power', \
         #  'face_block_color_hist','face_block_color_rect','face_block_gray_texture','face_block_lbp','face_block_power'
